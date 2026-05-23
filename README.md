@@ -1,5 +1,7 @@
 # Extending a Custom Processor Architecture in Logisim
 
+![Banner](/assets/micro.png)
+
 Project focused on assembly programming and low-level computer architecture using a custom processor simulated in Logisim.
 
 The work explores processor internals through assembly development, stack manipulation, instruction analysis and ISA extension by implementing new microinstructions directly into the processor architecture.
