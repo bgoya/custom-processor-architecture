@@ -1,79 +1,140 @@
-# School Project N°1: ASM and Processor Architecture (Subject: Computer Systems)
+# Extending a Custom Processor Architecture in Logisim
 
-This practical assignment consists of analyzing and extending a microarchitecture designed using the `Logisim` simulator. The goals are to code simple programs in assembly language, modify parts of the architecture, and design new instructions.
+Project focused on assembly programming and low-level computer architecture using a custom processor simulated in Logisim.
 
-The simulator can be downloaded from the website http://www.cburch.com/logisim/ or from the Ubuntu repositories. It requires Java 1.5 or higher. To run it, enter the following command in a console:
+The work explores processor internals through assembly development, stack manipulation, instruction analysis and ISA extension by implementing new microinstructions directly into the processor architecture.
 
-`java -jar logisim.jar`
 
-<img width="657" height="273" alt="image" src="https://github.com/user-attachments/assets/70a17fb8-681a-4c24-952e-e72fb482399b" />
 
-To download the OrgaSmall Architecture, go to: https://github.com/fokerman/microOrgaSmall/ The version we will be using is under the name OrgaSmallWithStack.
+## Overview
 
-### Assemble and Execute - Write the following file, compile it, and load it into the machine's memory:
-![image](https://github.com/user-attachments/assets/a830e215-fe1b-4c8c-98d1-dc9a3495dcd5)
+This project was developed as part of a Computer Systems course centered around processor architecture and low-level execution models.
 
-a) Before running the program, describe its expected behavior in words. Do not explain it instruction by instruction; the goal is to understand what the program does and what result it generates. 
+Using the OrgaSmall architecture in Logisim, the project involved:
+- writing and analyzing assembly programs,
+- understanding instruction execution at the microinstruction level,
+- extending the processor instruction set,
+- and modifying the assembler and control memory to support new operations.
 
-`Solution`: The program compares the values of two registers, incrementing the first by +1 until both reach the same value (0x70). While the equality condition is not met, the program—using the stack and other registers—stores decreasing values into memory addresses corresponding to the incrementing register, starting from 0xAF (at address 0x50) and ending with 0x90 (at address 0x6F). When both compared registers reach the same value, the JZ (Jump if Zero) instruction executes because the Z flag is set. It jumps to the memory space labeled fin. Since the values at fin are 0xA0 and 0x00, a JMP instruction is executed (opcode: 10100) back to memory address 0x00, creating a loop.
+The project combines practical assembly programming with architecture-level modifications and processor simulation.
 
-b) Identify the memory address for each of the program's labels. 
 
-`Solution`:
 
-main: [0x00]
-aca: [0x0a]
-coso2: [0x14]
-fin: [0x20]
-halt: [0x22]
+## Features
 
-c) Execute the program and identify, if possible, how many clock cycles are required for the program to reach the JMP halt instruction. 
+- Assembly programming on a custom architecture
+- Stack manipulation and control flow handling
+- Processor microinstruction analysis
+- Custom ISA extension
+- Modified assembler support
+- Control memory integration
+- Logisim-based processor simulation
 
-`Solution`: It is not possible to reach the halt instruction because, as explained in point "a", the program enters an infinite loop before reaching it.
 
-d) How many microinstructions are required to execute the ADD instruction? How many for JZ? How many for JMP? 
 
-`Solution`:
+## Stack
 
-ADD: 4 microinstructions
-JZ: 2 microinstructions
-JMP: 1 microinstruction
+- Assembly
+- Logisim
+- Python
+- Microcode
+- Computer Architecture
 
-e) Does the program use the stack? What data is stored in the stack? 
 
-`Solution`: Yes. The initial value of register R0 (which was set to 0x00) is stored in the stack. The register value is pushed onto the stack (using the PUSH instruction); after performing operations and changing its value, the POP instruction is executed to restore the previous value to the register.
 
-f) Describe in detail the operation of the PUSH, POP, CALL, and RET instructions. 
+## Architecture
 
-`Solution`:
+The project uses the OrgaSmallWithStack processor architecture simulated in Logisim.
 
-PUSH |Rx|, Ry: Stores the value of Ry at the memory address pointed to by Rx (which is used as the Stack Pointer, usually R7 by convention). It then subtracts 0x01 from the value of Rx, making it point to the previous memory address, which becomes the new top of the stack.
+Main components explored during development include:
+- Program Counter (PC)
+- Register File
+- ALU
+- Stack Pointer
+- Control Unit
+- RAM
+- Microinstruction memory
 
-POP |Rx|, Ry: Retrieves the last value stored in the stack (the one immediately below the current pointer) and overwrites Ry with it. It also increments the value of the register used as the pointer by 1, moving it to the next memory address.
 
-CALL |Rx|, ...
 
-...Ry: The current value of the PC (the address of the next instruction) is pushed onto the stack at the address pointed to by Rx. The pointer is moved back one position, and the value of Ry is loaded into the PC.
+## Assembly Programming
 
-...M: Same as above, but uses an immediate value M instead of the register Ry.
+Several assembly programs were implemented and analyzed to understand:
+- arithmetic and logical operations,
+- jumps and branching,
+- stack usage,
+- subroutine calls,
+- and instruction execution flow.
 
-RET |Rx|: The opposite of CALL. It assigns the value stored in memory at the position pointed to by Rx to the PC and increments the Rx pointer.
+The programs interact directly with registers, memory and processor flags while executing inside the simulated architecture.
 
-### Extending the Machine - Adding the Following New Instructions:
-<img width="804" alt="Untitled1" src="https://github.com/user-attachments/assets/e8fcbe6d-ea5d-43ae-b773-6b61a4398b0b">
 
-`Solution`:
-The solution for this exercise is included in the ADDINMEM.zip file, which contains the following four files:
-- `ADDINMEM.ops`: Independent implementation of the ADDINMEM microinstruction.
-- `microOps_v2.ops`: Implementation of the ADDINMEM microinstruction integrated with the rest of the processor's microinstructions.
-- `microOps_v2.mem`: Memory file containing the processor instructions (including ADDINMEM), which must be loaded into the Control Unit memory for operation in Logisim.
-- `assembler_v2.py`: Modified assembler.py file that includes the new microinstruction.
 
-### Programming - Write the following instructions in ASM:
-<img width="936" alt="Untitled" src="https://github.com/user-attachments/assets/1f14b9c5-eba5-42ca-8559-e5a50e4ddbaa">
+## ISA Extension
 
-`Solution`:
-The solution for this exercise is included in the processArray.zip file, which contains the following three files:
-- `processArray.asm`: The processArray function written in assembly language, using the instructions supported by the processor.
-- `processArray.mem`: A memory file containing the encoded instructions for the function, which must be loaded into the RAM for the program to run.
-- `processArray.txt`: A text file containing the program's assembly instructions along with their corresponding memory addresses.
+One of the main goals of the project was extending the processor instruction set by implementing new custom instructions.
+
+This required:
+- modifying processor microinstructions,
+- updating the control memory,
+- integrating the new instruction into the architecture,
+- and adapting the assembler to recognize the new opcode.
+
+The implementation includes:
+- custom `.ops` microinstruction definitions,
+- updated memory files,
+- and a modified assembler written in Python.
+
+
+
+## Stack and Control Flow
+
+The project also explores low-level stack operations and execution control through instructions such as:
+- PUSH
+- POP
+- CALL
+- RET
+- JMP
+- JZ
+
+These instructions were analyzed both at the assembly level and at the microinstruction execution level.
+
+
+
+## Key Learnings
+
+- Assembly language programming
+- Processor architecture fundamentals
+- Stack-based execution
+- ISA design and extension
+- Instruction decoding
+- Microinstruction execution
+- Low-level debugging
+- Computer architecture simulation
+
+
+
+## Repository Structure
+
+```
+.
+├── asm/
+├── microcode/
+├── assembler/
+├── logisim/
+├── assets/
+└── README.md
+```
+
+## Future Improvements
+
+Potential future extensions include:
+
+- implementing additional custom instructions,
+- improving memory management,
+- adding interrupt handling,
+- and exploring pipelined execution models.
+
+## Author
+
+Developed as a group project for the Computer Systems course at Universidad Torcuato Di Tella. Forked from [taimouteo's tp1-td2](https://github.com/taimouteo/tp1-td2).
