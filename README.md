@@ -135,7 +135,7 @@ These instructions were analyzed both at the assembly level and at the microinst
 │   └── assembler_v2.py
 │
 ├── assets/
-│   └── screenshots/
+│   └── micro.png
 │
 └── README.md
 ```
