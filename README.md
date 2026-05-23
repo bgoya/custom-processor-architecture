@@ -16,7 +16,7 @@ Using the OrgaSmall architecture in Logisim, the project involved:
 - extending the processor instruction set,
 - and modifying the assembler and control memory to support new operations.
 
-The project combines practical assembly programming with architecture-level modifications and processor simulation.
+The project combines practical assembly programming with architecture-level modifications and processor simulation using [fokerman's microOrgaSmall Logisim processor architecture](https://github.com/fokerman/microOrgaSmall/)
 
 
 
