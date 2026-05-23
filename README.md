@@ -119,10 +119,22 @@ These instructions were analyzed both at the assembly level and at the microinst
 ```
 .
 ├── asm/
+│   ├── processArray.asm
+│   ├── processArray.mem
+│   └── processArray.txt
+│
 ├── microcode/
+│   ├── ADDINMEM.ops
+│   ├── microCode_v2.ops
+│   ├── microCode_v2.mem
+│   └── ejaddinmem2.mem
+│
 ├── assembler/
-├── logisim/
+│   └── assembler_v2.py
+│
 ├── assets/
+│   └── screenshots/
+│
 └── README.md
 ```
 
